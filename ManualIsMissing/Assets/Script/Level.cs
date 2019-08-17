@@ -9,8 +9,13 @@ public class Level : MonoBehaviour
     private const float TamTopCastle = 4f;
     private void Start()
     {
-        CreateCastle(50f, 20f,true);
-        CreateCastle(50f, 20f, false);
+        CreateGapCAstles(25f, 50f, 20f);
+    }
+
+    private void CreateGapCAstles(float gapy, float gapSize, float xposition)
+    {
+        CreateCastle(gapy - gapSize * .5f, xposition, true);
+        CreateCastle(CameraOrthoSize * 2f - gapy - gapSize * .5f, xposition, false);
     }
     private void CreateCastle(float height, float xPosition,bool createBottom)
     {
@@ -23,7 +28,7 @@ public class Level : MonoBehaviour
         }
         else
         {
-            CastleTopPosition = +CameraOrthoSize - height + TamTopCastle*.5f;
+            CastleTopPosition = +CameraOrthoSize - height - TamTopCastle*.5f;
         }
         head.position = new Vector3(xPosition,CastleTopPosition);
 
