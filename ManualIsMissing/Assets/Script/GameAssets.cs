@@ -15,4 +15,6 @@ public class GameAssets : MonoBehaviour
         instance = this;
     }
     public Sprite Topocastelo;
+    public Transform pfTopCastle;
+    public Transform pfCastleBody;
 }

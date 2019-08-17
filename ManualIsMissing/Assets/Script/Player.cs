@@ -25,4 +25,8 @@ public class Player : MonoBehaviour
     {
         rb2d.velocity = Vector2.up * jump;
     }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Dead");
+    }
 }
