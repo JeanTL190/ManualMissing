@@ -10,6 +10,7 @@ public class GameHandler : MonoBehaviour
         Debug.Log("GameStart");
 
         GameObject gameObject = new GameObject("Pipe", typeof(SpriteRenderer));
+        gameObject.GetComponent<SpriteRenderer>().sprite = GameAssets.GetInstance().Topocastelo;
     }
 
 }
