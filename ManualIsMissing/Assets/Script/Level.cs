@@ -7,11 +7,54 @@ public class Level : MonoBehaviour
     private const float CameraOrthoSize = 50f;
     private const float TamCastle=8f;
     private const float TamTopCastle = 4f;
-    private void Start()
+    private const float speed = 10f;
+    private const float destroyPosition=-100f;
+    private const float spawnPosition = +100f;
+
+    private List<Castle> castleList;
+    private float castleSpawnTimer;
+    private float castleSpawnTimerMax;
+
+    private void Awake()
     {
-        CreateGapCAstles(25f, 50f, 20f);
+        castleList = new List<Castle>();
+        castleSpawnTimerMax = .5f;
     }
 
+    private void Start()
+    {
+        CreateGapCAstles(75f, 50f, 20f);
+    }
+
+    private void Update()
+    {
+        HandleCastleMovement();
+        HandleCastleSpawning();
+    }
+    private void HandleCastleSpawning()
+    {
+        castleSpawnTimer -= Time.deltaTime;
+        if (castleSpawnTimer < 0)
+        {
+            castleSpawnTimer += castleSpawnTimerMax;
+            CreateGapCAstles(75f, 50f, spawnPosition);
+        }
+    }
+    private void HandleCastleMovement()
+    {
+        for (int i = 0; i < castleList.Count; i++)
+        {
+            Castle castle = castleList[i];
+            castle.Move();
+            if (castle.GetXposition() < destroyPosition)
+            {
+                castle.DestroySelf();
+                castleList.Remove(castle);
+                i--;
+            }
+
+        }
+    }
     private void CreateGapCAstles(float gapy, float gapSize, float xposition)
     {
         CreateCastle(gapy - gapSize * .5f, xposition, true);
@@ -52,5 +95,34 @@ public class Level : MonoBehaviour
         BoxCollider2D boxcolliderbody = body.GetComponent<BoxCollider2D>();
         boxcolliderbody.size = new Vector2(TamCastle, height);
         boxcolliderbody.offset = new Vector2(0f, height*0.5f);
+
+        Castle castle = new Castle(head, body);
+        castleList.Add(castle);
+    }
+
+    private class Castle
+    {
+        private Transform headTransform;
+        private Transform bodyTransform;
+
+        public Castle(Transform headTransform,Transform bodyTransform)
+        {
+            this.headTransform = headTransform;
+            this.bodyTransform = bodyTransform;
+        }
+        public void Move()
+        {
+            headTransform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+            bodyTransform.position += new Vector3(-1, 0, 0) * speed * Time.deltaTime;
+        }
+        public float GetXposition()
+        {
+            return headTransform.position.x;
+        }
+        public void DestroySelf()
+        {
+            Destroy(headTransform.gameObject);
+            Destroy(bodyTransform.gameObject);
+        }
     }
 }

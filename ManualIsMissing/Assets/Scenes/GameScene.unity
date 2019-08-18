@@ -346,7 +346,7 @@ SpriteRenderer:
   m_SortingLayerID: -992292549
   m_SortingLayer: -1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: d46273a5907dec040b97d14e79c574e8, type: 3}
   m_Color: {r: 0.9339623, g: 0.2511125, b: 0.2511125, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -366,7 +366,7 @@ Transform:
   m_GameObject: {fileID: 895054166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.4, z: 0}
-  m_LocalScale: {x: 10000, y: 1000, z: 0}
+  m_LocalScale: {x: 10, y: 8, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -382,10 +382,10 @@ GameObject:
   - component: {fileID: 1933470610}
   - component: {fileID: 1933470609}
   - component: {fileID: 1933470611}
+  - component: {fileID: 1933470615}
   - component: {fileID: 1933470612}
   - component: {fileID: 1933470613}
   - component: {fileID: 1933470614}
-  - component: {fileID: 1933470615}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -450,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 1933470608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -3.1, y: 14.9, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
@@ -478,7 +478,7 @@ BoxCollider2D:
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_UsedByEffector: 0
+  m_UsedByEffector: 1
   m_UsedByComposite: 0
   m_Offset: {x: -0.6798043, y: -0.31508565}
   m_SpriteTilingProperty:
@@ -546,7 +546,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -1.6988225, y: 2.3217192}
+  m_Offset: {x: -1.8750174, y: 2.2539523}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -557,7 +557,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.6905174, y: 3.1049566}
+  m_Size: {x: 4.3381276, y: 2.9694214}
   m_EdgeRadius: 0
 --- !u!1 &2084525957
 GameObject:
