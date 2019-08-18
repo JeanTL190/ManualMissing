@@ -7,23 +7,25 @@ public class Level : MonoBehaviour
     private const float CameraOrthoSize = 50f;
     private const float TamCastle=8f;
     private const float TamTopCastle = 4f;
-    private const float speed = 10f;
+    private const float speed = 30f;
     private const float destroyPosition=-100f;
     private const float spawnPosition = +100f;
 
     private List<Castle> castleList;
     private float castleSpawnTimer;
     private float castleSpawnTimerMax;
+    private float gapSize;
 
     private void Awake()
     {
         castleList = new List<Castle>();
-        castleSpawnTimerMax = .5f;
+        castleSpawnTimerMax = 1.5f;
+        gapSize = 50f;
     }
 
     private void Start()
     {
-        CreateGapCAstles(75f, 50f, 20f);
+        //CreateGapCAstles(75f, 50f, 20f);
     }
 
     private void Update()
@@ -37,7 +39,14 @@ public class Level : MonoBehaviour
         if (castleSpawnTimer < 0)
         {
             castleSpawnTimer += castleSpawnTimerMax;
-            CreateGapCAstles(75f, 50f, spawnPosition);
+
+            float heightEdgeLimit = 10f;
+            float minHeight = gapSize * .5f + heightEdgeLimit;
+            float totalHeight = CameraOrthoSize * 2f;
+            float maxHeight = totalHeight - gapSize * .5f - heightEdgeLimit;
+
+            float height = Random.Range(minHeight, maxHeight);
+            CreateGapCAstles(height, gapSize, spawnPosition);
         }
     }
     private void HandleCastleMovement()
