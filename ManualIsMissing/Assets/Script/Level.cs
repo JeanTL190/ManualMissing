@@ -10,28 +10,63 @@ public class Level : MonoBehaviour
     private const float speed = 30f;
     private const float destroyPosition=-100f;
     private const float spawnPosition = +100f;
+    private const float DragonPosition=0f;
+
+    private static Level instance;
+
+    public static Level GetInstance()
+    {
+        return instance;
+    }
 
     private List<Castle> castleList;
+    private int castlePassedCount=0;
+    private int castleSpawned=0;
     private float castleSpawnTimer;
     private float castleSpawnTimerMax;
     private float gapSize;
-
+    private State state;
+    private enum State
+    {
+        WaitingToStart,
+        Playing,
+        DragonDead,
+    }
     private void Awake()
     {
+        instance = this;
         castleList = new List<Castle>();
         castleSpawnTimerMax = 1.5f;
         gapSize = 50f;
+        state = State.WaitingToStart;
     }
 
     private void Start()
     {
-        //CreateGapCAstles(75f, 50f, 20f);
+        Player.GetInstance().Ondied += Dragon_OnDied;
+        Player.GetInstance().OnstartedPlaying += Dragon_OnStartedPlaying;
+    }
+
+    private void Dragon_OnStartedPlaying(object sender, System.EventArgs e)
+    {
+        state = State.Playing;
+    }
+
+    private void Dragon_OnDied(object sender, System.EventArgs e)
+    {
+        Debug.Log("Dead");
+        state = State.DragonDead;
     }
 
     private void Update()
     {
-        HandleCastleMovement();
-        HandleCastleSpawning();
+        if (state == State.Playing)
+        {
+            HandleCastleMovement();
+            HandleCastleSpawning();
+
+        }
+     
     }
     private void HandleCastleSpawning()
     {
@@ -54,7 +89,12 @@ public class Level : MonoBehaviour
         for (int i = 0; i < castleList.Count; i++)
         {
             Castle castle = castleList[i];
+            bool isToTheRightOfDragon = castle.GetXposition() > DragonPosition;
             castle.Move();
+            if(isToTheRightOfDragon && castle.GetXposition() <= DragonPosition && castle.IsBottom())
+            {
+                castlePassedCount++;
+            }
             if (castle.GetXposition() < destroyPosition)
             {
                 castle.DestroySelf();
@@ -68,6 +108,7 @@ public class Level : MonoBehaviour
     {
         CreateCastle(gapy - gapSize * .5f, xposition, true);
         CreateCastle(CameraOrthoSize * 2f - gapy - gapSize * .5f, xposition, false);
+        castleSpawned++;
     }
     private void CreateCastle(float height, float xPosition,bool createBottom)
     {
@@ -105,19 +146,31 @@ public class Level : MonoBehaviour
         boxcolliderbody.size = new Vector2(TamCastle, height);
         boxcolliderbody.offset = new Vector2(0f, height*0.5f);
 
-        Castle castle = new Castle(head, body);
+        Castle castle = new Castle(head, body, createBottom);
         castleList.Add(castle);
+    }
+
+    public int GetCastleSpawned()
+    {
+        return castleSpawned;
+    }
+
+    public int GetCastlePassedCount()
+    {
+        return castlePassedCount;
     }
 
     private class Castle
     {
         private Transform headTransform;
         private Transform bodyTransform;
+        private bool isBottom;
 
-        public Castle(Transform headTransform,Transform bodyTransform)
+        public Castle(Transform headTransform,Transform bodyTransform,bool isBottom)
         {
             this.headTransform = headTransform;
             this.bodyTransform = bodyTransform;
+            this.isBottom = isBottom;
         }
         public void Move()
         {
@@ -127,6 +180,10 @@ public class Level : MonoBehaviour
         public float GetXposition()
         {
             return headTransform.position.x;
+        }
+        public bool IsBottom()
+        {
+            return isBottom;
         }
         public void DestroySelf()
         {
